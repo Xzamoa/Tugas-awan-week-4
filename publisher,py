@@ -1,0 +1,25 @@
+import zmq
+import time
+import random
+
+context = zmq.Context()
+socket = context.socket(zmq.PUB)
+socket.bind("tcp://*:5555")
+
+topics = {
+    "230123001": "Prim",
+    "230123002": "Alex",
+    "230123003": "Raka"
+}
+
+games = ["Skyrim", "Valorant", "Genshin Impact", "Minecraft"]
+
+time.sleep(2)  # biar subscriber siap
+
+while True:
+    for topic, name in topics.items():
+        game = random.choice(games)
+        message = f"{topic} Hey, I got a new message for {name} - It is from {game}"
+        print("Sent:", message)
+        socket.send_string(message)
+    time.sleep(2)
